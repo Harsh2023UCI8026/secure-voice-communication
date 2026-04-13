@@ -48,7 +48,7 @@ function joinRoom() {
     socket.emit("joinRoom", roomId);
     document.getElementById("status").innerText = "Joined: " + roomId;
 
-    console.log("🏠 Joining:", roomId);
+    console.log(" Joining:", roomId);
 
     generateKeys();
 }
@@ -91,7 +91,7 @@ socket.on("receivePublicKey", async ({ publicKey }) => {
         ["encrypt"]
     );
 
-    console.log("✅ Receiver ready");
+    console.log(" Receiver ready");
 });
 
 // ------------------ RECORD ------------------
@@ -121,7 +121,7 @@ function stopRecording() {
     mediaRecorder.stop();
 
     mediaRecorder.onstop = async () => {
-        console.log("⏹ Recording stopped");
+        console.log(" Recording stopped");
 
         const blob = new Blob(audioChunks, {
             type: "audio/webm;codecs=opus"
@@ -129,7 +129,7 @@ function stopRecording() {
 
         const buffer = await blob.arrayBuffer();
 
-        console.log("📦 Audio size:", buffer.byteLength);
+        console.log(" Audio size:", buffer.byteLength);
 
         await encryptAudio(buffer);
     };
@@ -140,7 +140,7 @@ function stopRecording() {
 async function encryptAudio(buffer) {
 
     if (!receiverPublicKey) {
-        alert("⚠️ Receiver not ready!");
+        alert(" Receiver not ready!");
         return;
     }
 
@@ -174,35 +174,35 @@ async function encryptAudio(buffer) {
 
     window.payload = payload;
 
-    // 🔥 FULL ENCRYPTED DATA SHOW
+    //  FULL ENCRYPTED DATA SHOW
     document.getElementById("output").value =
         JSON.stringify(payload, null, 2);
 
-    console.log("🔐 Payload ready");
+    console.log(" Payload ready");
 }
 
 // ------------------ SEND ------------------
 
 function sendAudio() {
     if (!window.payload) {
-        alert("⚠️ Record first!");
+        alert(" Record first!");
         return;
     }
 
-    console.log("📤 Sending to room:", roomId);
+    console.log(" Sending to room:", roomId);
 
     socket.emit("sendEncryptedAudio", {
         roomId,
         ...window.payload
     });
 
-    console.log("✅ Sent");
+    console.log(" Sent");
 }
 
 // ------------------ RECEIVE ------------------
 
 socket.on("receiveEncryptedAudio", async (data) => {
-    console.log("🔥 RECEIVED", data);
+    console.log(" RECEIVED", data);
 
     const { encryptedAudio, encryptedAESKey, iv } = data;
 
@@ -230,7 +230,7 @@ socket.on("receiveEncryptedAudio", async (data) => {
             base64ToBuffer(encryptedAudio)
         );
 
-        console.log("✅ Decryption success");
+        console.log(" Decryption success");
         console.log("Decrypted size:", decryptedAudioBuffer.byteLength);
 
         const blob = new Blob([decryptedAudioBuffer], {
@@ -239,14 +239,14 @@ socket.on("receiveEncryptedAudio", async (data) => {
 
         const url = URL.createObjectURL(blob);
 
-        console.log("🎧 Audio URL:", url);
+        console.log(" Audio URL:", url);
 
         const audio = document.createElement("audio");
         audio.src = url;
         audio.controls = true;
 
         audio.onloadedmetadata = () => {
-            console.log("✅ Duration:", audio.duration);
+            console.log(" Duration:", audio.duration);
         };
 
         const container = document.getElementById("audioContainer");
@@ -255,15 +255,15 @@ socket.on("receiveEncryptedAudio", async (data) => {
             container.innerHTML = "";
             container.appendChild(audio);
         } else {
-            console.error("❌ audioContainer not found");
+            console.error(" audioContainer not found");
         }
 
         receivedAudio = audio;
 
-        console.log("🎧 Audio ready");
+        console.log(" Audio ready");
 
     } catch (err) {
-        console.error("❌ Decryption error:", err);
+        console.error(" Decryption error:", err);
     }
 });
 
@@ -271,7 +271,7 @@ socket.on("receiveEncryptedAudio", async (data) => {
 
 document.getElementById("playBtn").onclick = async () => {
     if (!receivedAudio) {
-        alert("⚠️ No audio received!");
+        alert(" No audio received!");
         return;
     }
 
