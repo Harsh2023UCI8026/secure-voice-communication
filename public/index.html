@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Voice Communication</title>
+
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1a33;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        input {
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 80%;
+            height: 150px;
+            margin-top: 10px;
+            background: black;
+            color: #00ffcc;
+            border: 1px solid #444;
+            padding: 10px;
+        }
+
+        .section {
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🔐 Secure Voice Communication</h1>
+
+    <div class="container">
+
+        <!-- JOIN ROOM -->
+        <div class="section">
+            <input type="text" id="roomInput" placeholder="Enter Room ID">
+            <button onclick="joinRoom()">Join Room</button>
+            <p id="status">Not connected</p>
+        </div>
+
+        <!-- RECORD -->
+        <div class="section">
+            <button onclick="startRecording()">🎤 Start</button>
+            <button onclick="stopRecording()">⏹ Stop</button>
+        </div>
+
+        <!-- ENCRYPTED DATA -->
+        <div class="section">
+            <h3>Encrypted Data 👇</h3>
+
+            <textarea id="output" readonly></textarea>
+            <br>
+
+            <button onclick="sendAudio()">📤 Send</button>
+        </div>
+
+        <!-- RECEIVED AUDIO -->
+        <div class="section">
+            <h3>Received Audio</h3>
+
+            <button id="playBtn">▶ Play</button>
+
+            <!-- 🔥 VERY IMPORTANT -->
+            <div id="audioContainer"></div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+
+</body>
+</html>
